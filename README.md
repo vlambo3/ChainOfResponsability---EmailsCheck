@@ -36,7 +36,7 @@ This change ensures that the chain of responsibility is set up as soon as an ins
 
 ### UML Diagram
 
-![UMLDiagram](https://raw.githubusercontent.com/vlambo3/ChainOfResponsability---EmailsCheck/chain-of-responsability-2/images/uml.png)
+![uml](https://raw.githubusercontent.com/vlambo3/ChainOfResponsability---EmailsCheck/chain-of-responsability-2/images/uml.png)
 
 ### Testing
 
