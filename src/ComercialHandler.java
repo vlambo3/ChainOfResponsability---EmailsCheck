@@ -4,8 +4,9 @@ public class ComercialHandler extends Handler {
         if (email.getSubject().equalsIgnoreCase("Comercial")||
                 email.getDestination().equals("comerciala@colmena.com")) {
             return "El mail se envía a: comercial@colmena.com (Comercial)";
-        } else {
+        } else if (nextHandler != null) {
             return nextHandler.handleRequest(email);
         }
+        return "El mail no pudo ser procesado.";
     }
 }

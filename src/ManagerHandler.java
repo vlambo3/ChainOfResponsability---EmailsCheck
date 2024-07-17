@@ -5,8 +5,9 @@ public class ManagerHandler extends Handler {
         if (email.getSubject().equalsIgnoreCase("Gerencia")||
                 email.getDestination().equals("gerencia@colmena.com")) {
             return "El mail se envía a: gerencia@colmena.com (Gerencial)";
-        } else {
+        } else if (nextHandler != null) {
             return nextHandler.handleRequest(email);
         }
+        return "El mail no pudo ser procesado.";
     }
 }
