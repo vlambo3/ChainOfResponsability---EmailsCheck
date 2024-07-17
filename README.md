@@ -92,6 +92,10 @@ public class CheckEmail {
 
 `JUnit 5` is used to test the implementation of the Chain of Responsibility pattern in the email handling system. The tests ensure that emails are correctly routed to the appropriate handlers based on their subject or destination.
 
+### Variant for the CheckMail class
+
+Check the branch  `chain-of-responsibility-2` [Branch chain-of-responsability-2](https://github.com/vlambo3/ChainOfResponsability---EmailsCheck/tree/chain-of-responsability-2)
+
 ## Contact
 
 If you have any questions or need assistance with the project, feel free to contact me:
