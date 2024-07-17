@@ -42,7 +42,7 @@ JUnit 5 tests are used to ensure the quality of the `setEmail()` method in the `
 
 1. **Clone the repository**:
     ```sh
-    git clone <https://github.com/vlambo3/ChainOfResponsability---EmailsCheck>
+    git clone https://github.com/vlambo3/ChainOfResponsability---EmailsCheck
     ```
 
 2. **Checkout the desired branch**:
