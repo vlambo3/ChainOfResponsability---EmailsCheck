@@ -16,7 +16,7 @@ public class EmailCheckTest {
 
     @Test
     @DisplayName("Should send email to Technical Department")
-    public void mail2TecnicaEmail() {
+    public void mail2TechnicalEmail() {
         //arrange
         Email email = new Email("alejo@gmail.com", "tecnica@colmena.com", "Revisar PC");
         EmailCheck emailCheck = new EmailCheck();
@@ -102,7 +102,7 @@ public class EmailCheckTest {
 
     @Test
     @DisplayName("Should correctly process email with 'técnico' subject")
-    public void mail2TecnicoSubject() {
+    public void mail2TechnicalSubject() {
         //arrange
         Email email = new Email("origen@gmail.com", "destino@colmena.com", "técnico");
         EmailCheck emailCheck = new EmailCheck();
