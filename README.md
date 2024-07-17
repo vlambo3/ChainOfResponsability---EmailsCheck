@@ -1,3 +1,7 @@
+<div>
+    <p><a href="https://github.com/vlambo3/ChainOfResponsability---EmailsCheck"><img src="https://github.com/vlambo3/ChainOfResponsability---EmailsCheck/workflows/Test/badge.svg"></a>
+</div>
+
 # Chain of Responsibility Pattern Example
 
 ## Overview
