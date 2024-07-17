@@ -9,10 +9,6 @@ This repository contains an example of how to apply the Chain of Responsibility 
 - **`main`**: Development without the Chain of Responsibility pattern.
 - **`chain-of-responsibility`**: Development applying the Chain of Responsibility pattern.
 
-## Objective
-
-To design a UML diagram and implement the Chain of Responsibility pattern in Java based on the following scenario.
-
 ## Scenario
 
 At the company called Colmena, there are three departments: Management, Sales, and Technical. When they receive an email (in their colmena.com domain), they want it to be controlled according to the company's AI rules and sent to the appropriate department.
