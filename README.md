@@ -34,6 +34,10 @@ public class CheckEmail {
 
 This change ensures that the chain of responsibility is set up as soon as an instance of `CheckEmail` is created, without needing to call an additional method to create the chain.
 
+### UML Diagram
+
+![UMLDiagram](https://raw.githubusercontent.com/vlambo3/ChainOfResponsability---EmailsCheck/chain-of-responsability-2/images/uml.png)
+
 ### Testing
 
 `JUnit 5` is used to test the implementation of the Chain of Responsibility pattern in the email handling system. The tests ensure that emails are correctly routed to the appropriate handlers based on their subject or destination.
