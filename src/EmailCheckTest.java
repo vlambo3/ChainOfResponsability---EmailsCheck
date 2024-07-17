@@ -7,26 +7,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EmailCheckTest {
 
-    private EmailCheck emailCheck;
+    private CheckEmail emailCheck;
+    private final String EXPECTED_RESPONSE_MANAGEMENT = "El mail se envía a: gerencia@colmena.com (Gerencial)";
+    private final String EXPECTED_RESPONSE_COMERCIAL = "El mail se envía a: comercial@colmena.com (Comercial)";
+    private final String EXPECTED_RESPONSE_TECHNICAL = "El mail se envía a: tecnica@colmena.com (Técnico)";
+    private final String EXPECTED_RESPONSE_SPAM = "El mail se marca como SPAM.";
 
     @BeforeEach
     void setUp() {
-        emailCheck = new EmailCheck();
+        emailCheck = new CheckEmail();
+
     }
 
     @Test
     @DisplayName("Should send email to Technical Department")
-    public void mail2TecnicaEmail() {
+    public void mail2TechnicalEmail() {
         //arrange
         Email email = new Email("alejo@gmail.com", "tecnica@colmena.com", "Revisar PC");
-        EmailCheck emailCheck = new EmailCheck();
 
-        String expectedResponse = "El mail se envía a: tecnica@colmena.com (Técnico)";
         //act
-        String emailProcessed = emailCheck.setEmail(email);
+        String emailProcessed = emailCheck.checkEmail(email);
 
         //assert
-        assertEquals(expectedResponse, emailProcessed);
+        assertEquals(EXPECTED_RESPONSE_TECHNICAL, emailProcessed);
     }
 
     @Test
@@ -35,14 +38,11 @@ public class EmailCheckTest {
         //arrange
         Email email = new Email("alejo@gmail.com", "comerciall@colmena.com", "comercial");
 
-        EmailCheck emailCheck = new EmailCheck();
-
-        String expectedResponse = "El mail se envía a: comercial@colmena.com (Comercial)";
         //act
-        String emailProcessed = emailCheck.setEmail(email);
+        String emailProcessed = emailCheck.checkEmail(email);
 
         //assert
-        assertEquals(expectedResponse, emailProcessed);
+        assertEquals(EXPECTED_RESPONSE_COMERCIAL, emailProcessed);
     }
 
     @Test
@@ -50,14 +50,12 @@ public class EmailCheckTest {
     public void mail2GerenciaEmail() {
         //arrange
         Email email = new Email("alejo@gmail.com", "gerencia@colmena.com", "gerencia");
-        EmailCheck emailCheck = new EmailCheck();
 
-        String expectedResponse = "El mail se envía a: gerencia@colmena.com (Gerencial)";
         //act
-        String emailProcessed = emailCheck.setEmail(email);
+        String emailProcessed = emailCheck.checkEmail(email);
 
         //assert
-        assertEquals(expectedResponse, emailProcessed);
+        assertEquals(EXPECTED_RESPONSE_MANAGEMENT, emailProcessed);
     }
 
     @Test
@@ -67,7 +65,7 @@ public class EmailCheckTest {
         Email email = new Email("origen@gmail.com", "destino@colmena.com", "Gerencia");
 
         //act and assert
-        assertDoesNotThrow(() -> emailCheck.setEmail(email));
+        assertDoesNotThrow(() -> emailCheck.checkEmail(email));
     }
 
     @Test
@@ -75,14 +73,12 @@ public class EmailCheckTest {
     public void mail2GerenciaSubject() {
         //arrange
         Email email = new Email("origen@gmail.com", "destino@colmena.com", "Gerencia");
-        EmailCheck emailCheck = new EmailCheck();
 
-        String expectedResponse = "El mail se envía a: gerencia@colmena.com (Gerencial)";
         //act
-        String emailProcessed = emailCheck.setEmail(email);
+        String emailProcessed = emailCheck.checkEmail(email);
 
         //assert
-        assertEquals(expectedResponse, emailProcessed);
+        assertEquals(EXPECTED_RESPONSE_MANAGEMENT, emailProcessed);
     }
 
     @Test
@@ -90,29 +86,37 @@ public class EmailCheckTest {
     public void mail2ComercialSubject() {
         //arrange
         Email email = new Email("origen@gmail.com", "destino@colmena.com", "comercial");
-        EmailCheck emailCheck = new EmailCheck();
 
-        String expectedResponse = "El mail se envía a: comercial@colmena.com (Comercial)";
         //act
-        String emailProcessed = emailCheck.setEmail(email);
+        String emailProcessed = emailCheck.checkEmail(email);
 
         //assert
-        assertEquals(expectedResponse, emailProcessed);
+        assertEquals(EXPECTED_RESPONSE_COMERCIAL, emailProcessed);
     }
 
     @Test
     @DisplayName("Should correctly process email with 'técnico' subject")
-    public void mail2TecnicoSubject() {
+    public void mail2TechnicalSubject() {
         //arrange
         Email email = new Email("origen@gmail.com", "destino@colmena.com", "técnico");
-        EmailCheck emailCheck = new EmailCheck();
 
-        String expectedResponse = "El mail se envía a: tecnica@colmena.com (Técnico)";
         //act
-        String emailProcessed = emailCheck.setEmail(email);
+        String emailProcessed = emailCheck.checkEmail(email);
 
         //assert
-        assertEquals(expectedResponse, emailProcessed);
+        assertEquals(EXPECTED_RESPONSE_TECHNICAL, emailProcessed);
     }
 
+    @Test
+    @DisplayName("Email without specific destination")
+    public void mail2Company() {
+        //arrange
+        Email email = new Email("origen@gmail.com", "destino@colmena.com", "Some subject");
+
+        //act
+        String emailProcessed = emailCheck.checkEmail(email);
+
+        //assert
+        assertEquals(EXPECTED_RESPONSE_SPAM, emailProcessed);
+    }
 }
