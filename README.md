@@ -1,76 +1,96 @@
-# Chain of Responsibility Pattern Example
+# Email Handling System with Chain of Responsibility Pattern
+
+This branch `chain-of-responsibility` demonstrates the application of the Chain of Responsibility design pattern to process email requests within a company named Colmena. The system routes emails to appropriate departments based on their subject or destination.
 
 ## Overview
 
-This repository contains an example of how to apply the Chain of Responsibility pattern in Java. The `main` branch contains the development without applying the pattern, while the `chain-of-responsibility` branch contains the same development with the pattern applied.
+The Chain of Responsibility pattern is used to process a request by passing it through a series of handler objects. Each handler can independently decide whether to process the request or pass it to the next handler in the chain. This provides a flexible way to process requests without coupling the request sender to the request receivers.
 
-## Branches
+## Abstract Class: `Handler`
 
-- **`main`**: Development without the Chain of Responsibility pattern.
-- **`chain-of-responsibility`**: Development applying the Chain of Responsibility pattern.
+The `Handler` class is an abstract class that defines the structure for handling email requests.
 
-## Objective
+### Attributes
 
-To design a UML diagram and implement the Chain of Responsibility pattern in Java based on the following scenario.
+- **`protected Handler nextHandler`**:
+  - A reference to the next handler in the chain.
+  - **Access Modifier**: `protected` to allow subclasses and classes within the same package to access it directly, facilitating the implementation and extension of the pattern.
 
-## Scenario
+### Methods
 
-At the company called Colmena, there are three departments: Management, Sales, and Technical. When they receive an email (in their colmena.com domain), they want it to be controlled according to the company's AI rules and sent to the appropriate department.
+- **`setNextHandler(Handler nextHandler)`**:
+  - Sets the next handler in the chain if the current handler cannot process the request.
+  - **Parameter**: `nextHandler` - the next handler in the chain.
 
-We will simulate this control with the following assumptions:
+- **`handleRequest(Email email)`**:
+  - An abstract method that must be implemented by subclasses.
+  - **Parameter**: `email` - the email being processed.
 
-### Email Routing Rules
+```java
+public abstract class Handler {
+    protected Handler nextHandler;
 
-| Subject    | Destination Email           | Department   |
-|------------|-----------------------------|--------------|
-| Management | gerencia@colmena.com        | Management   |
-| Sales      | comercial@colmena.com       | Sales        |
-| Technical  | tecnica@colmena.com         | Technical    |
-| Any other  | Any other                   | Marked as SPAM |
+    public void setNextHandler(Handler nextHandler) {
+        this.nextHandler = nextHandler;
+    }
 
-The program will display where the email is received in each case. The email belongs to a class called `Email`, which has three string attributes: origin, destination, and subject.
+    public abstract String handleRequest(Email email);
+}
+```
 
-## Implementation
+## Class: CheckEmail
 
-A class named `EmailCheck` is created to build a chain of responsibilities. This class checks each element (part of the chain). If the email is for Management, it informs accordingly. If not, it continues to the next check, which tests if it is for Technical, and so on until it determines the appropriate department or marks the email as spam.
+The `CheckEmail` class checks the handling of emails based on their destination or subject. It creates a chain of handlers to process email requests.
 
-### Tests
+### Attributes
 
-JUnit 5 tests are used to ensure the quality of the `setEmail()` method in the `CheckEmail` class. These tests validate that emails are correctly routed to the appropriate departments or marked as spam when necessary.
+- **`private Handler chain`**:
+  - Represents the first handler in the chain of responsibility.
 
-## How to Run
+### Methods
 
-1. **Clone the repository**:
-    ```sh
-    git clone https://github.com/vlambo3/ChainOfResponsability---EmailsCheck
-    ```
+- **`createChain()`**:
+  - Creates the chain of responsibility by linking various handlers.
+  - **Returns**: the first handler in the chain.
 
-2. **Checkout the desired branch**:
-    - For development without the pattern:
-        ```sh
-        git checkout main
-        ```
-    - For development with the Chain of Responsibility pattern:
-        ```sh
-        git checkout chain-of-responsibility
-        ```
+- **Constructor `CheckEmail()`**:
+  - Initializes the chain of responsibility.
 
-3. **Build and run the project**:
-    - Ensure you have Java and Maven installed.
-    - Navigate to the project directory and execute:
-        ```sh
-        mvn clean install
-        mvn exec:java -Dexec.mainClass="com.colmena.Main"
-        ```
+- **`checkEmail(Email email)`**:
+  - Initiates the processing of an email through the chain of responsibility.
+  - **Parameter**: `email` - the email being processed.
+  - **Returns**: the result of the email handling.
 
-4. **Run tests**:
-    ```sh
-    mvn test
-    ```
+```java
+public class CheckEmail {
+    private Handler chain;
 
-## Conclusion
+    private Handler createChain() {
+        Handler managerHandler = new ManagerHandler();
+        Handler comercialHandler = new ComercialHandler();
+        Handler technicalHandler = new TechnicalHandler();
+        Handler spamHandler = new SpamHandler();
 
-This example demonstrates the application of the Chain of Responsibility pattern in a real-world scenario. The use of JUnit 5 tests ensures that the email processing logic is robust and reliable. By comparing the two branches, developers can understand the benefits and implementation details of the Chain of Responsibility pattern.
+        managerHandler.setNextHandler(comercialHandler);
+        comercialHandler.setNextHandler(technicalHandler);
+        technicalHandler.setNextHandler(spamHandler);
+
+        return managerHandler;
+    }
+
+    public CheckEmail() {
+        this.chain = createChain();
+    }
+
+    public String checkEmail(Email email) {
+        return chain.handleRequest(email);
+    }
+}
+```
+
+### Testing
+
+`JUnit 5` is used to test the implementation of the Chain of Responsibility pattern in the email handling system. The tests ensure that emails are correctly routed to the appropriate handlers based on their subject or destination.
 
 ## Contact
 
