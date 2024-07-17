@@ -1,71 +1,19 @@
-# Email Handling System with Chain of Responsibility Pattern
+## Branch: `chain-of-responsibility-2`
 
-This branch `chain-of-responsibility` demonstrates the application of the Chain of Responsibility design pattern to process email requests within a company named Colmena. The system routes emails to appropriate departments based on their subject or destination.
+In the `chain-of-responsibility-2` branch, the constructor of the `CheckEmail` class has been updated to include the handler creation within the constructor itself. This simplifies the initialization process and makes it easier to set up the chain of responsibility when creating an instance of `CheckEmail`.
 
-## Overview
+### Updated Class: CheckEmail
 
-The Chain of Responsibility pattern is used to process a request by passing it through a series of handler objects. Each handler can independently decide whether to process the request or pass it to the next handler in the chain. This provides a flexible way to process requests without coupling the request sender to the request receivers.
+The `CheckEmail` class now initializes the chain of responsibility directly in the constructor.
 
-## Abstract Class: `Handler`
-
-The `Handler` class is an abstract class that defines the structure for handling email requests.
-
-### Attributes
-
-- **`protected Handler nextHandler`**:
-  - A reference to the next handler in the chain.
-  - **Access Modifier**: `protected` to allow subclasses and classes within the same package to access it directly, facilitating the implementation and extension of the pattern.
-
-### Methods
-
-- **`setNextHandler(Handler nextHandler)`**:
-  - Sets the next handler in the chain if the current handler cannot process the request.
-  - **Parameter**: `nextHandler` - the next handler in the chain.
-
-- **`handleRequest(Email email)`**:
-  - An abstract method that must be implemented by subclasses.
-  - **Parameter**: `email` - the email being processed.
-
-```java
-public abstract class Handler {
-    protected Handler nextHandler;
-
-    public void setNextHandler(Handler nextHandler) {
-        this.nextHandler = nextHandler;
-    }
-
-    public abstract String handleRequest(Email email);
-}
-```
-
-## Class: CheckEmail
-
-The `CheckEmail` class checks the handling of emails based on their destination or subject. It creates a chain of handlers to process email requests.
-
-### Attributes
-
-- **`private Handler chain`**:
-  - Represents the first handler in the chain of responsibility.
-
-### Methods
-
-- **`createChain()`**:
-  - Creates the chain of responsibility by linking various handlers.
-  - **Returns**: the first handler in the chain.
-
-- **Constructor `CheckEmail()`**:
-  - Initializes the chain of responsibility.
-
-- **`checkEmail(Email email)`**:
-  - Initiates the processing of an email through the chain of responsibility.
-  - **Parameter**: `email` - the email being processed.
-  - **Returns**: the result of the email handling.
+### Constructor `CheckEmail()`:
+- Initializes the chain of responsibility within the constructor.
 
 ```java
 public class CheckEmail {
     private Handler chain;
 
-    private Handler createChain() {
+    public CheckEmail() {
         Handler managerHandler = new ManagerHandler();
         Handler comercialHandler = new ComercialHandler();
         Handler technicalHandler = new TechnicalHandler();
@@ -75,11 +23,7 @@ public class CheckEmail {
         comercialHandler.setNextHandler(technicalHandler);
         technicalHandler.setNextHandler(spamHandler);
 
-        return managerHandler;
-    }
-
-    public CheckEmail() {
-        this.chain = createChain();
+        this.chain = managerHandler;
     }
 
     public String checkEmail(Email email) {
@@ -87,6 +31,8 @@ public class CheckEmail {
     }
 }
 ```
+
+This change ensures that the chain of responsibility is set up as soon as an instance of `CheckEmail` is created, without needing to call an additional method to create the chain.
 
 ### Testing
 
